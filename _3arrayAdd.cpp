@@ -3,10 +3,11 @@
 #include <vector>
 
 #define SIZE 10
-
+/*
 const char* kern = R"(
  __kernel void _3arrAdd(global const int* A, global const int* B, global const int* C, global int* D) {
-    D[get_global_id(0)] = A[get_global_id(0)] + B[get_global_id(0)] + C[get_global_id(0)];
+    int i = get_global_id(0);
+    D[i] = A[i] + B[i] + C[i];
 }
 )";
 
@@ -100,3 +101,5 @@ int main() {
 
     return 0;
 }
+
+*/
