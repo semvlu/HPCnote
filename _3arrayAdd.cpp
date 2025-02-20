@@ -80,8 +80,8 @@ int main() {
     // ------ Create kernel for exec ------
     cl::compatibility::make_kernel<cl::Buffer, cl::Buffer, cl::Buffer, cl::Buffer> kern0(cl::Kernel(prog, "_3arrAdd"));
     // *N.B.* Kernel name must match the function name
-
     // https://github.khronos.org/OpenCL-CLHPP/structcl_1_1compatibility_1_1make__kernel.html
+
     cl::NDRange global(SIZE); // #threads on dev
 
     kern0(cl::EnqueueArgs(qu, global),

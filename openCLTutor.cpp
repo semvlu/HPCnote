@@ -45,6 +45,10 @@ int main() {
         exit(1);
     }
 
+    for (const auto& device : all_devices) {
+        printDeviceInfo(device);
+    }
+
     cl::Device dev = all_devices[0];
     std::cout << "Using device: " << dev.getInfo<CL_DEVICE_NAME>() << std::endl;
     std::cout << "#CU: " << dev.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>() << std::endl;
@@ -102,8 +106,8 @@ int main() {
     // ------ Create kernel for exec ------
     cl::compatibility::make_kernel<cl::Buffer, cl::Buffer, cl::Buffer, cl::Event> kern0(cl::Kernel(prog, "kern0"));
     // *N.B.* Kernel name must match the function name
-   
     // https://github.khronos.org/OpenCL-CLHPP/structcl_1_1compatibility_1_1make__kernel.html
+
     cl::NDRange global(SIZE); // #threads on dev
 
     // Event
@@ -136,5 +140,25 @@ int main() {
     // ------ Events: inter-queue sync ------
 
     return 0;
+}
+
+
+void printDeviceInfo(const cl::Device& device) {
+    std::cout << "  Device Name: " << device.getInfo<CL_DEVICE_NAME>() << "\n";
+    std::cout << "  Device Type: ";
+    switch (device.getInfo<CL_DEVICE_TYPE>()) {
+    case CL_DEVICE_TYPE_CPU: std::cout << "CPU"; break;
+    case CL_DEVICE_TYPE_GPU: std::cout << "GPU"; break;
+    case CL_DEVICE_TYPE_ACCELERATOR: std::cout << "Accelerator"; break;
+    default: std::cout << "Other"; break;
+    }
+    std::cout << "\n";
+
+    std::cout << "  Compute Units: " << device.getInfo<CL_DEVICE_MAX_COMPUTE_UNITS>() << "\n";
+    std::cout << "  Global Memory: " << device.getInfo<CL_DEVICE_GLOBAL_MEM_SIZE>() / (1024 * 1024) << " MB\n";
+    std::cout << "  Local Memory: " << device.getInfo<CL_DEVICE_LOCAL_MEM_SIZE>() / 1024 << " KB\n";
+    std::cout << "  Max Work Group Size: " << device.getInfo<CL_DEVICE_MAX_WORK_GROUP_SIZE>() << "\n";
+    std::cout << "  Max Clock Frequency: " << device.getInfo<CL_DEVICE_MAX_CLOCK_FREQUENCY>() << " MHz\n";
+    std::cout << "----------------------------------------\n";
 }
 
