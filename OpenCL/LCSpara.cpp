@@ -129,8 +129,8 @@ int main() {
     cl::CommandQueue qu(contxt, dev);
     // Read/Write/Map/Copy
     // blocking = CL_TRUE for sync
-    qu.enqueueWriteBuffer(buf_A, CL_TRUE, 0, sizeof(int) * m, A_h);
-    qu.enqueueWriteBuffer(buf_B, CL_TRUE, 0, sizeof(int) * n, B_h);
+    qu.enqueueWriteBuffer(buf_A, CL_TRUE, 0, sizeof(char) * m, A_h);
+    qu.enqueueWriteBuffer(buf_B, CL_TRUE, 0, sizeof(char) * n, B_h);
     qu.enqueueWriteBuffer(buf_m, CL_TRUE, 0, sizeof(int), &m);
     qu.enqueueWriteBuffer(buf_n, CL_TRUE, 0, sizeof(int), &n);
 
@@ -154,7 +154,8 @@ int main() {
     // *N.B.* Kernel name must match the function name
     // https://github.khronos.org/OpenCL-CLHPP/structcl_1_1compatibility_1_1make__kernel.html
 
-    cl::NDRange global(m+1, n+1);
+    cl::NDRange global(m, n);
+    
     // Event
     //cl::Event erLcsKern;
 
